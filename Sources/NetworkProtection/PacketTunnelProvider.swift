@@ -562,14 +562,31 @@ open class PacketTunnelProvider: NEPacketTunnelProvider {
             }
 
             Task { [weak self] in
-                await self?.handleAdapterStopped()
-                if case .superceded = reason {
-                    self?.notificationsPresenter.showSupersededNotification()
+                guard let self else { return }
+                await self.handleAdapterStopped()
+                if self.shouldShowSupersededNotification(for: reason) {
+                    self.notificationsPresenter.showSupersededNotification()
                 }
 
                 completionHandler()
             }
         }
+    }
+
+    private func shouldShowSupersededNotification(for stopReason: NEProviderStopReason) -> Bool {
+        // iOS seems not to receive superceded reason when another VPN takes over
+        // But it does receive configurationDisabled. Treating that like a supersession.
+#if os(iOS)
+        guard case .configurationDisabled = stopReason else {
+            return false
+        }
+        return true
+#else
+        guard case .superceded = stopReason else {
+            return false
+        }
+        return true
+#endif
     }
 
     /// Do not cancel, directly... call this method so that the adapter and tester are stopped too.
