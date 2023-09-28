@@ -561,12 +561,14 @@ open class PacketTunnelProvider: NEPacketTunnelProvider {
                 self?.debugEvents?.fire(error.networkProtectionError)
             }
 
+            guard let self else { return }
+
+            if self.shouldShowSupersededNotification(for: reason) {
+                self.notificationsPresenter.showSupersededNotification()
+            }
+
             Task { [weak self] in
-                guard let self else { return }
-                await self.handleAdapterStopped()
-                if self.shouldShowSupersededNotification(for: reason) {
-                    self.notificationsPresenter.showSupersededNotification()
-                }
+                await self?.handleAdapterStopped()
 
                 completionHandler()
             }
