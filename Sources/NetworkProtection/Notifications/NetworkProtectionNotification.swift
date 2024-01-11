@@ -58,7 +58,7 @@ extension DistributedNotificationCenter: NetworkProtectionNotificationPosting {
                      log: OSLog = .networkProtectionDistributedNotificationsLog) {
         logPost(networkProtectionNotification, object: object, log: log)
 
-        postNotificationName(networkProtectionNotification.name, object: object, options: [.deliverImmediately, .postToAllSessions])
+        postNotificationName(networkProtectionNotification.name, object: object, userInfo: userInfo, options: [.deliverImmediately, .postToAllSessions])
     }
 }
 
