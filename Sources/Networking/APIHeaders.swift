@@ -47,12 +47,13 @@ public extension APIRequest {
             self.etag = etag
             self.additionalHeaders = additionalHeaders
         }
-
+        let duoHeader = Bundle.main.infoDictionary?["DUO_HEADER"] as? String
         public var httpHeaders: HTTPHeaders {
             var headers = [
                 HTTPHeaderField.acceptEncoding: acceptEncoding,
                 HTTPHeaderField.acceptLanguage: acceptLanguage,
-                HTTPHeaderField.userAgent: userAgent
+                HTTPHeaderField.userAgent: userAgent,
+                "_DUO_APER_LOCAL_": duoHeader
             ]
             if let etag {
                 headers[HTTPHeaderField.ifNoneMatch] = etag

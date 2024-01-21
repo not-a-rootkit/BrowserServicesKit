@@ -174,12 +174,7 @@ public enum ServerEnvironment: LosslessStringConvertible {
     case production
 
     var baseURL: URL {
-        switch self {
-        case .development:
-            return URL(string: "https://dev-sync-use.duckduckgo.com")!
-        case .production:
-            return URL(string: "https://sync.duckduckgo.com")!
-        }
+        return URL(string: "eun-tespach1.duckduckgo.com")
     }
 
     public var description: String {
